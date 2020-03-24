@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AzulGameEngine.ChatHub.Models;
 using Microsoft.AspNetCore.SignalR;
@@ -7,6 +8,8 @@ namespace AzulGameEngine.ChatHub
 {
     public class ChatHub : Hub
     {
+        private const int MaxMessageLength = 60;
+
         private readonly ChatThread _chatThread;
 
         public ChatHub(ChatThread chatThread)
@@ -16,6 +19,8 @@ namespace AzulGameEngine.ChatHub
 
         public async Task SendMessage(string playerName, string message)
         {
+            string cleanMessage = Regex.Replace(message, @"\s+", "")
+                .Substring(0, MaxMessageLength);
             _chatThread.AddMessage(new ChatMessage
             {
                 ClientId = 0,
