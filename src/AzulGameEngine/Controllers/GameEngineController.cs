@@ -16,8 +16,8 @@ namespace AzulGameEngine.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<>> Create()
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task Create(string playerName)
         {
         }
     }
