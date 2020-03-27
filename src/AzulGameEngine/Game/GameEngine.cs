@@ -2,15 +2,14 @@
 using AzulGameEngine.Game.Models;
 using LanguageExt;
 
-
 namespace AzulGameEngine.Game
 {
-    public class PlayerList
+    public class GameEngine
     {
         private readonly ConcurrentDictionary<long, PlayerModel> players =
             new ConcurrentDictionary<long, PlayerModel>();
-
-        public Either<string, bool> Add(PlayerModel player)
+        
+        public Either<string, bool> AddPlayer(PlayerModel player)
         {
             if (players.ContainsKey(player.Id))
             {
