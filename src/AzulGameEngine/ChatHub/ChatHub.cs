@@ -28,8 +28,8 @@ namespace AzulGameEngine.ChatHub
                 PlayerName = playerName,
                 CreatedAt = DateTime.Now
             });
-
-            await Clients.All.SendAsync("NewMessage", playerName, message);
+            
+            await this.Clients.All.SendAsync("SendMessage", playerName, message);
         }
     }
 }

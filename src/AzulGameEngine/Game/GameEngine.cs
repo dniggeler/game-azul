@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using AzulGameEngine.Game.Models;
 using LanguageExt;
 
@@ -6,27 +8,44 @@ namespace AzulGameEngine.Game
 {
     public class GameEngine
     {
-        private readonly ConcurrentDictionary<long, PlayerModel> players =
-            new ConcurrentDictionary<long, PlayerModel>();
-        
-        public Either<string, bool> AddPlayer(PlayerModel player)
+        private readonly Random rnd;
+
+        private readonly ConcurrentDictionary<string, PlayerModel> players =
+            new ConcurrentDictionary<string, PlayerModel>();
+
+        public GameEngine(Random rnd)
         {
-            if (players.ContainsKey(player.Id))
+            this.rnd = rnd;
+        }
+
+        public ICollection<PlayerModel> GetPlayers()
+        {
+            return players.Values;
+        }
+
+        public Either<string, long> AddPlayer(string playerName)
+        {
+            if (players.ContainsKey(playerName))
             {
                 return "Player already exist";
             }
 
             if (players.Count == GameConfiguration.MaxPlayers)
             {
-                return "Game is full of players";
+                return "Game is full with players";
             }
 
-            players.AddOrUpdate(
-                player.Id,
-                id => player,
+            var newPlayer = players.AddOrUpdate(
+                playerName,
+                name => new PlayerModel
+                {
+                    Id = rnd.Next(),
+                    Name = name,
+                    JoinedAt = DateTime.Now
+                }, 
                 (_, p) => p);
 
-            return true;
+            return newPlayer.Id;
         }
     }
 }
