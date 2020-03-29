@@ -19,17 +19,25 @@ namespace AzulGameEngine.ChatHub
 
         public async Task SendMessage(string playerName, string message)
         {
-            string cleanMessage = Regex.Replace(message, @"\s+", "")
-                .Substring(0, MaxMessageLength);
-            _chatThread.AddMessage(new ChatMessage
+            try
             {
-                ClientId = 0,
-                Message = message,
-                PlayerName = playerName,
-                CreatedAt = DateTime.Now
-            });
+                string cleanMessage = Regex.Replace(message, @"\s+", "")
+                    .Substring(0, Math.Min(MaxMessageLength, message.Length));
+
+                _chatThread.AddMessage(new ChatMessage
+                {
+                    ClientId = 0,
+                    Message = cleanMessage,
+                    PlayerName = playerName,
+                    CreatedAt = DateTime.Now
+                });
             
-            await this.Clients.All.SendAsync("SendMessage", playerName, message);
+                await this.Clients.All.SendAsync("NewMessage", playerName, message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

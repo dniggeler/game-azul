@@ -46,7 +46,10 @@ namespace AzulGameEngine.Controllers
                         Right: playerId => Created(HttpContext.Request.Path.Value, playerId),
                         Left: err => BadRequest(err));
 
-            await this.chat.SendNewPlayerMessage(name);
+            if (command.IsRight)
+            {
+                await this.chat.SendNewPlayerMessage(name);
+            }
 
             return response;
         }

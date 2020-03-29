@@ -17,9 +17,14 @@ namespace TestClient.Console
 
             await connection.StartAsync();
 
-            connection.On<string, string>("NewPlayer", (playerName, message) =>
+            connection.On<string, string>("NewMessage", (playerName, message) =>
             {
                 System.Console.WriteLine($"{playerName}: {message}");
+            });
+
+            connection.On<string>("NewPlayer", (playerName) =>
+            {
+                System.Console.WriteLine($"New player {playerName} joined the game.");
             });
 
             System.Console.WriteLine($"Connection is in state '{connection.State}'");
@@ -27,25 +32,31 @@ namespace TestClient.Console
             if (connection.State == HubConnectionState.Connected)
             {
                 Random rnd = new Random();
-                int playerId = rnd.Next(1, 10);
-                string playerName = $"{playerId}";
+
+                string playerName = $"toni-{rnd.Next(100)}";
 
                 while (true)
                 {
-                    string input = System.Console.ReadLine();
+                    Command cmd = Command.For(System.Console.ReadLine());
 
-                    if (!string.IsNullOrEmpty(input))
+                    switch (cmd.ClientAction)
                     {
-                        if ("q".Equals(input))
-                        {
+                        case ClientAction.Quit: break;
+                        case ClientAction.Send:
+                            await SendMessage(playerName, cmd, connection);
                             break;
-                        }
-
-                        await connection.InvokeAsync("SendMessage", playerName, input);
+                        default: continue;
                     }
+                    
                 }
             }
+        }
 
+        private static async Task SendMessage(
+            string playerName, Command command, HubConnection connection)
+        {
+            await command.Option1
+                .IfSomeAsync(msg => connection.InvokeAsync("SendMessage", playerName, msg));
         }
     }
 }
