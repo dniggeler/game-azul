@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -31,25 +33,53 @@ namespace TestClient.Console
 
             if (connection.State == HubConnectionState.Connected)
             {
+                HttpClient httpClient = new HttpClient();
+                httpClient.BaseAddress = new Uri("https://localhost:44380/api/game/");
+
                 Random rnd = new Random();
 
                 string playerName = $"toni-{rnd.Next(100)}";
 
-                while (true)
+                bool isProcessing = true;
+                while (isProcessing)
                 {
                     Command cmd = Command.For(System.Console.ReadLine());
 
                     switch (cmd.ClientAction)
                     {
-                        case ClientAction.Quit: break;
+                        case ClientAction.Quit:
+                        {
+                            isProcessing = false;
+                            break;
+                        }
+                        case ClientAction.Help:
+                            PrintUsage();
+                            break;
                         case ClientAction.Send:
                             await SendMessage(playerName, cmd, connection);
                             break;
+                        case ClientAction.JoinGame:
+                            await JoinGame(playerName, httpClient);
+                            break;
                         default: continue;
                     }
-                    
                 }
             }
+        }
+
+        private static async Task JoinGame(string playerName, HttpClient httpClient)
+        {
+            var response = await httpClient.PostAsync($"players/{playerName}",null);
+        }
+
+        private static void PrintUsage()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Usage:");
+            sb.AppendLine("s: <message> - send message to chat");
+            sb.AppendLine("j: <player name> - join the game");
+            sb.AppendLine("q: - quit the client");
+            sb.AppendLine("h: - this message");
         }
 
         private static async Task SendMessage(

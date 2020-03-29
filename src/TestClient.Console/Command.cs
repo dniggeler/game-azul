@@ -30,7 +30,7 @@ namespace TestClient.Console
                 return new Command(ClientAction.None);
             }
 
-            var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var parts = input.Split(':', StringSplitOptions.RemoveEmptyEntries);
 
             string actionStr = parts
                 .DefaultIfEmpty("h")
@@ -39,7 +39,7 @@ namespace TestClient.Console
             return actionStr switch
             {
                 "q" => new Command(ClientAction.Quit),
-                "j" => new Command(ClientAction.JoinGame, GetOption(1)),
+                "j" => new Command(ClientAction.JoinGame),
                 "s" => new Command(ClientAction.Send, GetOption(1)),
                 "h" => new Command(ClientAction.Help),
                 _ => new Command(ClientAction.None)

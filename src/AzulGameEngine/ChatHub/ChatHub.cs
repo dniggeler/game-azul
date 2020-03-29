@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AzulGameEngine.ChatHub.Models;
@@ -21,13 +22,16 @@ namespace AzulGameEngine.ChatHub
         {
             try
             {
-                string cleanMessage = Regex.Replace(message, @"\s+", "")
-                    .Substring(0, Math.Min(MaxMessageLength, message.Length));
+                string cleanMessage =
+                    Regex
+                        .Replace(message, @"\s+", "");
+                        
+                string shortened =
+                    cleanMessage.Substring(0, Math.Min(MaxMessageLength, cleanMessage.Length));
 
                 _chatThread.AddMessage(new ChatMessage
                 {
-                    ClientId = 0,
-                    Message = cleanMessage,
+                    Message = shortened,
                     PlayerName = playerName,
                     CreatedAt = DateTime.Now
                 });

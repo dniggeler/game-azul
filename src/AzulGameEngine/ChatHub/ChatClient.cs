@@ -15,9 +15,7 @@ namespace AzulGameEngine.ChatHub
 
         public Task SendNewPlayerMessage(string playerName)
         {
-            string message = $"Player {playerName} joined the game";
-
-            return hubContext.Clients.All.SendAsync("NewPlayer", playerName, message);
+            return hubContext.Clients.All.SendAsync("NewPlayer", playerName);
         }
     }
 }
