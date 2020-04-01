@@ -9,7 +9,7 @@ namespace AzulGameEngine.Controllers
 {
     [Produces("application/json")]
     [ApiController]
-    [Route("api/game")]
+    [Route("api")]
     public class GameEngineController : ControllerBase
     {
         private readonly GameEngine gameEngine;

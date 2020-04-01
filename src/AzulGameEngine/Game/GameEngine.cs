@@ -47,5 +47,9 @@ namespace AzulGameEngine.Game
 
             return newPlayer.Id;
         }
+
+        public long Start()
+        {
+        }
     }
 }
