@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-
 namespace AzulGameEngine.ChatHub
 {
     public class ChatClient : IChatClient

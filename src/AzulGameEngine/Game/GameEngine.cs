@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using AzulGameEngine.Game.Models;
 using LanguageExt;
+using LanguageExt.ClassInstances;
+
 
 namespace AzulGameEngine.Game
 {
@@ -17,6 +19,8 @@ namespace AzulGameEngine.Game
         {
             this.rnd = rnd;
         }
+
+        public int NumberOfPlayers => players.Count;
 
         public ICollection<PlayerModel> GetPlayers()
         {
@@ -48,8 +52,13 @@ namespace AzulGameEngine.Game
             return newPlayer.Id;
         }
 
-        public long Start()
+        public Either<string,(long GameId, long GameStateId)> Start()
         {
+
+            long stateId = 0;
+            long gameId = rnd.Next();
+
+            return (gameId, stateId);
         }
     }
 }

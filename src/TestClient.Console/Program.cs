@@ -8,10 +8,12 @@ namespace TestClient.Console
 {
     class Program
     {
-        private static string chatHubName = "chatHub";
+        private const string ChatHubName = "chatHub";
+        private const string BaseAddress = "https://localhost:44380";
+
         static async Task Main(string[] args)
         {
-            string url = $"https://localhost:44380/{chatHubName}";
+            string url = $"{BaseAddress}/{ChatHubName}";
 
             HubConnection connection = new HubConnectionBuilder()
                 .WithUrl(url)
@@ -34,7 +36,7 @@ namespace TestClient.Console
             if (connection.State == HubConnectionState.Connected)
             {
                 HttpClient httpClient = new HttpClient();
-                httpClient.BaseAddress = new Uri("https://localhost:44380/api/game/");
+                httpClient.BaseAddress = new Uri($"{BaseAddress}/api/game/");
 
                 Random rnd = new Random();
 
