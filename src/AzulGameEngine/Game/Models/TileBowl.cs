@@ -14,6 +14,8 @@ namespace AzulGameEngine.Game.Models
         {
         }
 
+        public bool IsEmpty => tiles.IsEmpty;
+
         public void AddTile<T>(T tile) where T : Tile
         {
             if (tiles.Count == MaxTiles)
@@ -31,7 +33,7 @@ namespace AzulGameEngine.Game.Models
                 return Option<T>.None;
             }
 
-            var r = tiles.OfType<T>().Find(t => t == null);
+            var r = tiles.OfType<T>().Find(t => t != null);
 
             r.IfSome(t => tiles = tiles.Remove(t));
 
