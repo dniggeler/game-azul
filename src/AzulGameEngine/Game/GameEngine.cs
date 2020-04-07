@@ -3,8 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using AzulGameEngine.Game.Models;
 using LanguageExt;
-using LanguageExt.ClassInstances;
-
 
 namespace AzulGameEngine.Game
 {
@@ -14,6 +12,8 @@ namespace AzulGameEngine.Game
 
         private readonly ConcurrentDictionary<string, PlayerModel> players =
             new ConcurrentDictionary<string, PlayerModel>();
+
+        private readonly Dictionary<int,TileBowl> tileBowls = new Dictionary<int, TileBowl>();
 
         public GameEngine(Random rnd)
         {
@@ -57,6 +57,11 @@ namespace AzulGameEngine.Game
 
             long stateId = 0;
             long gameId = rnd.Next();
+
+            for (int ii = 0; ii < GameConfiguration.NumberOfTileBowls(NumberOfPlayers); ii++)
+            {
+                tileBowls.Add(ii, new TileBowl());
+            }
 
             return (gameId, stateId);
         }
