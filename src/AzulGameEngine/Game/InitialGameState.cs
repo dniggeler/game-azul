@@ -12,9 +12,19 @@ namespace AzulGameEngine.Game
             this.gameEngine = gameEngine;
         }
 
-        public Either<string, (long GameId, long GameStateId)> Start()
+        public Either<string, (long GameId, long GameStateId)> Create()
         {
             return this.gameEngine.Start();
+        }
+
+        public Either<string, long> Start()
+        {
+            return "Change not allowed";
+        }
+
+        public Either<string, FinalGameResult> Finish()
+        {
+            return "Change not allowed";
         }
     }
 }
