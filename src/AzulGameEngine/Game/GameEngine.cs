@@ -10,50 +10,32 @@ namespace AzulGameEngine.Game
     {
         private readonly Random rnd;
 
-        private readonly ConcurrentDictionary<string, PlayerModel> players =
-            new ConcurrentDictionary<string, PlayerModel>();
+        private IGameState gameState;
 
         private readonly Dictionary<int,TileBowl> tileBowls = new Dictionary<int, TileBowl>();
 
         public GameEngine(Random rnd)
         {
             this.rnd = rnd;
+
+            gameState = new InitialGameState(rnd);
         }
 
-        public int NumberOfPlayers => players.Count;
+        public int NumberOfPlayers => gameState.NumberOfPlayers;
 
         public ICollection<PlayerModel> GetPlayers()
         {
-            return players.Values;
+            return gameState.GetPlayers();
         }
 
         public Either<string, long> AddPlayer(string playerName)
         {
-            if (players.ContainsKey(playerName))
-            {
-                return "Player already exist";
-            }
-
-            if (players.Count == GameConfiguration.MaxPlayers)
-            {
-                return "Game is full with players";
-            }
-
-            var newPlayer = players.AddOrUpdate(
-                playerName,
-                name => new PlayerModel
-                {
-                    Id = rnd.Next(),
-                    Name = name,
-                    JoinedAt = DateTime.Now
-                }, 
-                (_, p) => p);
-
-            return newPlayer.Id;
+            return gameState.AddPlayer(playerName);
         }
 
         public Either<string,(long GameId, long GameStateId)> Start()
         {
+            gameState = new PlayGameState(this.rnd);
 
             long stateId = 0;
             long gameId = rnd.Next();

@@ -1,20 +1,19 @@
-﻿using AzulGameEngine.Game.Models;
+﻿using System;
+using AzulGameEngine.Game.Models;
 using LanguageExt;
 
 namespace AzulGameEngine.Game
 {
-    public class InitialGameState : IGameState
+    internal class InitialGameState : GameStateBase, IGameState
     {
-        private readonly GameEngine gameEngine;
-
-        public InitialGameState(GameEngine gameEngine)
+        public InitialGameState(Random rnd)
+            :base(rnd)
         {
-            this.gameEngine = gameEngine;
         }
 
         public Either<string, (long GameId, long GameStateId)> Create()
         {
-            return this.gameEngine.Start();
+            return "Cannot start yet";
         }
 
         public Either<string, long> Start()

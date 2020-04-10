@@ -25,7 +25,6 @@ namespace AzulGameEngine
             services.AddSingleton<IChatClient, ChatClient>();
             services.AddSingleton<ChatThread>();
             services.AddSingleton<GameEngine>();
-            services.AddSingleton<IGameState>(provider => provider.GetRequiredService<InitialGameState>());
             services.AddSingleton(provider => new Random(seed));
         }
 
