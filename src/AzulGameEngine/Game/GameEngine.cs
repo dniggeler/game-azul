@@ -33,6 +33,11 @@ namespace AzulGameEngine.Game
             return gameState.AddPlayer(playerName);
         }
 
+        public Either<string, (long GameId, long GameStateId)> Create()
+        {
+            return gameState.Create();
+        }
+
         public Either<string,(long GameId, long GameStateId)> Start()
         {
             gameState = new PlayGameState(this.rnd);

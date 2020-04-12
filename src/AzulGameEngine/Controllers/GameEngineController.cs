@@ -23,6 +23,16 @@ namespace AzulGameEngine.Controllers
             this.chat = chat;
         }
 
+        [HttpPost("game")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult CreateGame()
+        {
+            return gameEngine.Create()
+                .Match<ActionResult>(
+                Right: t => Created(HttpContext.Request.Path.Value, t.GameId),
+                Left: err => BadRequest(err));
+        }
+
         [HttpGet("players")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult Get()

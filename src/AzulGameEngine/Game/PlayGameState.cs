@@ -27,7 +27,7 @@ namespace AzulGameEngine.Game
 
         public Either<string, FinalGameResult> Finish()
         {
-            return "Game is not finished"
+            return "Game is not finished";
         }
     }
 }

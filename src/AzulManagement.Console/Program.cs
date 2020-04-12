@@ -43,13 +43,30 @@ namespace AzulManagement.Console
                             string message = System.Console.ReadLine();
                             await SendMessage(message, connection);
                             break;
+                        case "c":
+                            await CreateGame(httpClient);
+                            break;
                         case "b":
                             await StartGame(httpClient);
                             break;
+                        case "p":
+                            await GetPlayers(httpClient);
+                            break;
+
                         default: continue;
                     }
                 }
             }
+        }
+
+        private static async Task GetPlayers(HttpClient httpClient)
+        {
+            var response = await httpClient.GetAsync("players");
+        }
+
+        private static async Task CreateGame(HttpClient httpClient)
+        {
+            var response = await httpClient.PostAsync("game", null);
         }
 
         private static async Task StartGame(HttpClient httpClient)
